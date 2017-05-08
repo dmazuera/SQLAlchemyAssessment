@@ -23,15 +23,15 @@ init_app()
 # 1. What is the datatype of the returned value of
 # ``Brand.query.filter_by(name='Ford')``?
 
-<flask_sqlalchemy.BaseQuery object at 0x7fc392a72c50>
+# <flask_sqlalchemy.BaseQuery object at 0x7fc392a72c50>
 
 # 2. In your own words, what is an association table, and what type of
 # relationship (many to one, many to many, one to one, etc.) does an
 # association table manage?
 
-Association tables are middle tables that only contain a primary key and foreign 
-and dont hold any extra data. They are just added to link together two other tables
-that are in the many to many relationships.
+# Association tables are middle tables that only contain a primary key and foreign 
+# and dont hold any extra data. They are just added to link together two other tables
+# that are in the many to many relationships.
 
 
 # -------------------------------------------------------------------
@@ -76,7 +76,7 @@ def get_model_info(year):
     data_join = db.session.query(Brand, Model).join(Model).all()
 
     for brand, model in data_join:
-        if model.year is year:
+        if model.year == year:
             print model.name, brand.name, brand.headquarters
 
 
@@ -89,24 +89,23 @@ def get_brands_summary():
                         Model.name,
                         Model.year).join(Model).all()
 
-    for brand.name, model.name, model.year in data_join:   # [(n, d, p), (n, d, p)]
-        print brand.name, model.name, model.year
+    for b_name, m_name, m_year in data_join:   # [(n, d, p), (n, d, p)]
+        print b_name, m_name, m_year
 
 
 def search_brands_by_name(mystr):
     """Returns all Brand objects corresponding to brands whose names include
     the given string."""
 
-    data_join = db.session.query(Brand.name.like("%mystr%"), .all()
+    return Brand.query.filter(Brand.name.like("%{}%".format(mystr))).all() 
 
-    for brand, model in data_join:
-        if brand.name.like('%Jane%') is mystr:
-            print model.name, brand.name, brand.headquarters
+
 
 
 def get_models_between(start_year, end_year):
     """Returns all Model objects corresponding to models made between
     start_year (inclusive) and end_year (exclusive)."""
 
-    pass 
+    print Model.query.filter((Model.year >= start_year) & (Model.year < end_year)).all() 
+
 
